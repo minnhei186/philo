@@ -6,13 +6,28 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:06:09 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/10 12:02:29 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:06:09 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	is_argument_number(char **argv)
+int	is_sutable_argv(int argc)
+{
+	if (argc > 6)
+	{
+		printf("error:too many argument\n");
+		return (1);
+	}
+	if (argc < 5)
+	{
+		printf("error:too few argument\n");
+		return (1);
+	}
+	return (0);
+}
+
+int	is_argument_number(char **argv)
 {
 	int	i;
 	int	j;
@@ -24,19 +39,42 @@ void	is_argument_number(char **argv)
 		j = 0;
 		while (argv[i][j])
 		{
-			if (!isdigit(argv[i][j]))
-				error_exit("error:need number value argument");
+			if (!ft_isdigit(argv[i][j]))
+			{
+				printf("error:need number value argument\n");
+				return (1);
+			}
 			j++;
 		}
 		i++;
 	}
+	return (0);
 }
 
-void	check_validation_arg(int argc, char **argv)
+int	is_sutable_number(char **argv)
 {
-	if (argc > 6)
-		error_exit("error:too many argument");
-	if(argc<5)
-		error_exit("error:too few argument");
-	is_argument_number(argv);
+	int	i;
+
+	i = 1;
+	while (argv[i])
+	{
+		if (ft_atoi(argv[i]) < 1)
+		{
+			printf("need more than number 0 \n");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	check_validation_arg(int argc, char **argv)
+{
+	if (is_sutable_argv(argc) == 1)
+		return (1);
+	if (is_argument_number(argv) == 1)
+		return (1);
+	if (is_sutable_number(argv) == 1)
+		return (1);
+	return (0);
 }

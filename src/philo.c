@@ -6,16 +6,11 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:07:46 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/25 09:26:52 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:51:37 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-__attribute__((destructor)) static void destructor()
-{
-	system("leaks -q a.out");
-}
 
 int	dead_check(t_thread_memory *info)
 {
@@ -27,15 +22,6 @@ int	dead_check(t_thread_memory *info)
 	}
 	pthread_mutex_unlock(&(info->dead_lock));
 	return (0);
-}
-
-void	protected_output(char *str, t_philo *philo)
-{
-	pthread_mutex_lock(&(philo->data->write));
-	if (dead_check(philo->data) != 1)
-		printf("%llu %i %s", get_time() - (philo->data->start_time), philo->id,
-			str);
-	pthread_mutex_unlock(&(philo->data->write));
 }
 
 void	*philo_ploblem(void *some_philo)
@@ -74,7 +60,7 @@ void	thread_make_and_do(t_thread_memory *thread_info, void *func)
 		i++;
 	}
 	pthread_join(moniter_th, NULL);
-	mutex_free(thread_info);
+	all_mutex_destroy(thread_info);
 	memory_free(thread_info);
 }
 
@@ -82,8 +68,10 @@ int	main(int argc, char **argv)
 {
 	t_thread_memory	thread_info;
 
-	check_validation_arg(argc, argv);
-	thread_init(&thread_info, argv);
+	if (check_validation_arg(argc, argv) == 1)
+		return (1);
+	if (thread_init(&thread_info, argv) == 1)
+		return (1);
 	philo_init(&thread_info);
 	thread_make_and_do(&thread_info, philo_ploblem);
 	return (0);

@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.c                                      :+:      :+:    :+:   */
+/*   data_init_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 10:37:07 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/10 07:00:02 by hosokawa         ###   ########.fr       */
+/*   Created: 2024/08/26 10:07:20 by hosokawa          #+#    #+#             */
+/*   Updated: 2024/08/26 15:54:13 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-//
-//#include "philo.h"
-//
-//void free_data(t_data *philo_info)
-//{
-//	if(philo_info->tid)
-//		;
-//	if(philo_info->forks)
-//
-//	if(philo_info->philos)
-//
-//}
+
+#include "philo.h"
+
+int	thread_fork_init(t_thread_memory *thread_m)
+{
+	int	i;
+
+	i = 0;
+	while (i < thread_m->philo_num)
+	{
+		if (pthread_mutex_init(&thread_m->forks[i], NULL) != 0)
+		{
+			init_fork_mutex_error(thread_m, i);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}

@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_utils.c                                       :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 12:07:20 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/24 12:48:10 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/26 10:01:10 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//エラーが発生した（exitがしよう出来ないことを考えておこう)NULL,,,
-
-void	mutex_free(t_thread_memory *thread_info)
+void	all_mutex_destroy(t_thread_memory *thread_info)
 {
 	int	i;
 
@@ -24,13 +22,11 @@ void	mutex_free(t_thread_memory *thread_info)
 	i = 0;
 	while (i < thread_info->philo_num)
 	{
-		pthread_mutex_destroy(thread_info->forks);
+		pthread_mutex_destroy(&(thread_info->forks[i]));
 		i++;
 	}
 }
 
-//ポインタ空間だけをfreeしている。こういうこっちゃ、全く異なる。
-//世界があるよ。
 void	memory_free(t_thread_memory *thread_info)
 {
 	if (thread_info->tid)
