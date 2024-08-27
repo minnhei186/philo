@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:07:46 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/26 15:51:37 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:01:39 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,40 @@ void	*philo_ploblem(void *some_philo)
 	return (NULL);
 }
 
-void	thread_make_and_do(t_thread_memory *thread_info, void *func)
+int	thread_error(t_thread_memory *thread_info)
+{
+	all_mutex_destroy(thread_info);
+	memory_free(thread_info);
+	return (1);
+}
+
+int	thread_make_and_do(t_thread_memory *thread_info, void *func)
 {
 	int			i;
 	pthread_t	moniter_th;
 
-	pthread_create(&(moniter_th), NULL, moniter, thread_info);
+	if (pthread_create(&(moniter_th), NULL, moniter, thread_info) != 0)
+		return (1);
 	i = 0;
 	while (i < thread_info->philo_num)
 	{
-		pthread_create(&(thread_info->tid[i]), NULL, func,
-			(void *)(&thread_info->philos[i]));
+		if (pthread_create(&(thread_info->tid[i]), NULL, func,
+				(void *)(&thread_info->philos[i])) != 0)
+			return (1);
 		i++;
 	}
 	i = 0;
 	while (i < thread_info->philo_num)
 	{
-		pthread_join(thread_info->tid[i], NULL);
+		if (pthread_join(thread_info->tid[i], NULL) != 0)
+			return (1);
 		i++;
 	}
-	pthread_join(moniter_th, NULL);
+	if (pthread_join(moniter_th, NULL) != 0)
+		return (1);
 	all_mutex_destroy(thread_info);
 	memory_free(thread_info);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -73,6 +85,7 @@ int	main(int argc, char **argv)
 	if (thread_init(&thread_info, argv) == 1)
 		return (1);
 	philo_init(&thread_info);
-	thread_make_and_do(&thread_info, philo_ploblem);
+	if (thread_make_and_do(&thread_info, philo_ploblem) == 1)
+		return (thread_error(&thread_info));
 	return (0);
 }
