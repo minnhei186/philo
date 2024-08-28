@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:27:16 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/26 10:01:13 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:15:54 by dhosokaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	noteat_dead(t_thread_memory *info)
 	{
 		if (noteat_check(info, info->philos[i], info->death_time) == 1)
 		{
-			protected_output("died", &(info->philos[i]));
+			protected_output("died\n", &(info->philos[i]));
 			return (1);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 10:37:07 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/26 15:53:57 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:10:19 by dhosokaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	protected_output(char *str, t_philo *philo)
 {
 	pthread_mutex_lock(&(philo->data->write));
 	if (dead_check(philo->data) != 1)
-		printf("%llu %i %s", get_time() - (philo->data->start_time), philo->id,
+		printf("%lu %i %s", get_time() - (philo->data->start_time), philo->id,
 			str);
 	pthread_mutex_unlock(&(philo->data->write));
 }

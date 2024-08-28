@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:08:38 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/26 15:50:47 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:06:05 by dhosokaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	thread_init(t_thread_memory *thread_m, char **argv)
 void	philo_data_init(t_thread_memory *thread_m, t_philo *philo, int philo_id)
 {
 	philo->data = thread_m;
-	philo->id = philo_id;
+	philo->id = philo_id+1;
 	philo->eat_count = 0;
 	philo->eating = 0;
 	philo->time_to_die = get_time();

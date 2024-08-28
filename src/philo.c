@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:07:46 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/27 13:01:39 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:44:13 by dhosokaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,57 @@ int	dead_check(t_thread_memory *info)
 	return (0);
 }
 
+//static int calc_meal_time(t_philo *philo)
+//{
+//	int n;
+//	int id;
+//	int k;
+//	int unit;
+//
+//	n=philo->data->philo_num;
+//	if(n==1)
+//		return philo->data->start_time;
+//	id=philo->id;
+//	k=n/2;
+//	unit=(philo->data->eat_time)/k;
+//	if(unit==0)
+//		unit=1;
+//	return (philo->data->start_time+unit(id*k)%n)
+//
+//}
+
+static int calc_meal_time(t_philo *philo)
+{
+    int n;
+    int id;
+    int k;
+    int unit;
+
+    n = philo->data->philo_num;
+    if (n == 1)
+        return philo->data->start_time;
+
+    id = philo->id;
+    k = n / 2;
+    unit = philo->data->eat_time / k;
+
+    if (unit == 0)
+        unit = 1;
+
+    printf("philo_num:%i id: %i wait_time: %i   check_k: %i  check_unit:%i \n",n,id,unit*((id*k)%n),k,unit);
+    return ( unit * ((id * k)%n));
+}
+
 void	*philo_ploblem(void *some_philo)
 {
 	t_philo	*philo;
+	int wait_time;
 
 	philo = (t_philo *)some_philo;
-	if (philo->id % 2 == 1)
-		ft_strict_usleep(philo->data->eat_time / 2);
+	
+	wait_time=calc_meal_time(philo);
+	printf("id: %i  wait_time: %i\n",philo->id,wait_time);
+	ft_strict_usleep(calc_meal_time(philo));
 	while (dead_check(philo->data) != 1)
 	{
 		philo_dinner(philo);
