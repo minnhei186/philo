@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 10:37:07 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/29 11:04:53 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/29 12:39:17 by dhosokaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	protected_output(char *str, t_philo *philo)
 {
 	pthread_mutex_lock(&(philo->data->write));
 	if (dead_check(philo->data) != 1)
-		printf("%llu %i %s", get_time() - (philo->data->start_time), philo->id,
+		printf("%lu %i %s", get_time() - (philo->data->start_time), philo->id,
 			str);
 	pthread_mutex_unlock(&(philo->data->write));
 }
@@ -36,8 +36,8 @@ int	calc_wait_time(t_philo *philo)
 	unit = philo->data->eat_time / k;
 	if (unit == 0)
 		unit = 1;
-	printf("philo_num:%i id: %i wait_time: %i   check_k: %i  check_unit:%i \n",
-		n, id, unit * ((id * k) % n), k, unit);
+	//printf("philo_num:%i id: %i wait_time: %i   check_k: %i  check_unit:%i \n",
+	//	n, id, unit * ((id * k) % n), k, unit);
 	return (unit * ((id * k) % n));
 }
 

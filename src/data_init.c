@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:08:38 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/28 13:06:05 by dhosokaw         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:40:51 by dhosokaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,11 @@ void	philo_mutex_init(t_thread_memory *thread_m, t_philo *philo)
 
 	philo_n = thread_m->philo_num;
 	current_id = philo->id;
-	philo->l_fork = &(thread_m->forks[current_id]);
-	if (current_id == 0)
-		philo->r_fork = &(thread_m->forks[philo_n - 1]);
+	philo->l_fork = &(thread_m->forks[current_id-1]);
+	if (current_id == 1)
+		philo->r_fork = &(thread_m->forks[philo_n-1]);
 	else
-		philo->r_fork = &(thread_m->forks[current_id - 1]);
+		philo->r_fork = &(thread_m->forks[current_id - 2]);
 }
 
 void	philo_init(t_thread_memory *thread_m)
