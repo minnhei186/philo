@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:17:57 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/26 15:43:35 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:02:27 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ typedef struct s_philo
 	pthread_mutex_t		*l_fork;
 }						t_philo;
 
+// philo_utils
+void					protected_output(char *str, t_philo *philo);
+int						ft_isdigit(int c);
+int						ft_atoi(const char *str);
+int						ft_strncmp(const char *s1, const char *s2, size_t n);
+int						calc_wait_time(t_philo *philo);
+
 // free_utils
 void					all_mutex_destroy(t_thread_memory *thread_info);
 void					memory_free(t_thread_memory *thread_info);
@@ -87,6 +94,8 @@ void					ft_strict_usleep(u_int64_t time);
 // philo_check
 int						dead_check(t_thread_memory *info);
 
+//
+
 // philo_func
 void					philo_think_start(t_philo *philo);
 void					philo_sleep(t_philo *philo);
@@ -101,10 +110,4 @@ int						noteat_check(t_thread_memory *info, t_philo philo,
 int						noteat_dead(t_thread_memory *info);
 int						death_flag_wake_up(t_thread_memory *info);
 void					*moniter(void *thread_info);
-
-// philo_utils
-void					protected_output(char *str, t_philo *philo);
-int						ft_isdigit(int c);
-int						ft_atoi(const char *str);
-int						ft_strncmp(const char *s1, const char *s2, size_t n);
 #endif
