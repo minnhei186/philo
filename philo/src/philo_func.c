@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:22:42 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/29 12:48:53 by dhosokaw         ###   ########.fr       */
+/*   Updated: 2024/08/31 11:30:22 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,16 @@ void	get_fork(char *fork, t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	philo->eating = 1;
 	protected_output("is eating\n", philo);
 	pthread_mutex_lock(&(philo->data->meal_lock));
 	philo->time_to_die = get_time();
 	philo->eat_count++;
 	pthread_mutex_unlock(&(philo->data->meal_lock));
 	ft_strict_usleep(philo->data->eat_time);
-	philo->eating = 0;
 }
 
 void	philo_dinner(t_philo *philo)
 {
-	printf("now_dinner philo:%i \n",philo->id);
 	get_fork("left", philo);
 	if (philo->data->philo_num == 1)
 	{
@@ -63,4 +60,3 @@ void	philo_dinner(t_philo *philo)
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
 }
-

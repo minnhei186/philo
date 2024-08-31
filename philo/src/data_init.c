@@ -6,39 +6,11 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:08:38 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/29 15:40:51 by dhosokaw         ###   ########.fr       */
+/*   Updated: 2024/08/31 12:27:37 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-// int	thread_mutex_init(t_thread_memory *thread_m)
-//{
-//	if (pthread_mutex_init(&thread_m->dead_lock, NULL) != 0)
-//	{
-//		init_mutex_error(NULL, NULL, NULL);
-//		error_exit(thread_m, "mutex_error");
-//		return (1);
-//	}
-//	if (pthread_mutex_init(&thread_m->meal_lock, NULL) != 0)
-//	{
-//		init_mutex_error(&(thread_m->dead_lock), NULL, NULL);
-//		error_exit(thread_m, "mutex_error");
-//		return (1);
-//	}
-//	if (pthread_mutex_init(&thread_m->write, NULL) != 0)
-//	{
-//		init_mutex_error(&(thread_m->dead_lock), &(thread_m->meal_lock), NULL);
-//		error_exit(thread_m, "mutex_error");
-//		return (1);
-//	}
-//	if (thread_fork_init(thread_m) != 0)
-//	{
-//		error_exit(thread_m, "mutex_error");
-//		return (1);
-//	}
-//}
-//
 
 int	thread_mutex_init(t_thread_memory *thread_m)
 {
@@ -68,15 +40,10 @@ int	thread_mutex_init(t_thread_memory *thread_m)
 
 int	thread_init(t_thread_memory *thread_m, char **argv)
 {
-	thread_m->philo_num = ft_atoi(argv[1]);
-	thread_m->death_time = ft_atoi(argv[2]);
-	thread_m->eat_time = ft_atoi(argv[3]);
-	thread_m->sleep_time = ft_atoi(argv[4]);
-	if (argv[5])
-		thread_m->meals_nb = ft_atoi(argv[5]);
-	else
-		thread_m->meals_nb = 0;
+	thread_arg_init(thread_m, argv);
 	thread_m->start_time = get_time();
+	if (thread_m->start_time == 0)
+		return (1);
 	thread_m->tid = (pthread_t *)malloc(sizeof(pthread_t)
 			* (thread_m->philo_num));
 	if (!thread_m->tid)
@@ -97,11 +64,9 @@ int	thread_init(t_thread_memory *thread_m, char **argv)
 void	philo_data_init(t_thread_memory *thread_m, t_philo *philo, int philo_id)
 {
 	philo->data = thread_m;
-	philo->id = philo_id+1;
+	philo->id = philo_id + 1;
 	philo->eat_count = 0;
-	philo->eating = 0;
-	philo->time_to_die = get_time();
-	philo->t1 = thread_m->tid[philo_id];
+	philo->time_to_die = thread_m->start_time;
 }
 
 void	philo_mutex_init(t_thread_memory *thread_m, t_philo *philo)
@@ -111,9 +76,9 @@ void	philo_mutex_init(t_thread_memory *thread_m, t_philo *philo)
 
 	philo_n = thread_m->philo_num;
 	current_id = philo->id;
-	philo->l_fork = &(thread_m->forks[current_id-1]);
+	philo->l_fork = &(thread_m->forks[current_id - 1]);
 	if (current_id == 1)
-		philo->r_fork = &(thread_m->forks[philo_n-1]);
+		philo->r_fork = &(thread_m->forks[philo_n - 1]);
 	else
 		philo->r_fork = &(thread_m->forks[current_id - 2]);
 }

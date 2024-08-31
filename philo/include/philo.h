@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:17:57 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/29 11:02:27 by hosokawa         ###   ########.fr       */
+/*   Updated: 2024/08/31 12:28:56 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,8 @@ typedef struct s_theread_memory
 typedef struct s_philo
 {
 	t_thread_memory		*data;
-	pthread_t			t1;
 	int					id;
 	int					eat_count;
-	int					eating;
 	u_int64_t			time_to_die;
 	pthread_mutex_t		*r_fork;
 	pthread_mutex_t		*l_fork;
@@ -58,6 +56,8 @@ void					protected_output(char *str, t_philo *philo);
 int						ft_isdigit(int c);
 int						ft_atoi(const char *str);
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
+
+// calc_wait_time
 int						calc_wait_time(t_philo *philo);
 
 // free_utils
@@ -76,6 +76,7 @@ int						is_sutable_number(char **argv);
 int						check_validation_arg(int argc, char **argv);
 
 // data_init_utils
+void					thread_arg_init(t_thread_memory *thread_m, char **argv);
 int						thread_fork_init(t_thread_memory *thread_m);
 
 // data_init

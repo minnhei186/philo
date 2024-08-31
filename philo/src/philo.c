@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:07:46 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/29 12:46:56 by dhosokaw         ###   ########.fr       */
+/*   Updated: 2024/08/31 12:51:01 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	*philo_ploblem(void *some_philo)
 
 	philo = (t_philo *)some_philo;
 	ft_strict_usleep(calc_wait_time(philo));
-	printf("now_wake_up pihlo:%i\n",philo->id);
 	while (dead_check(philo->data) != 1)
 	{
 		philo_dinner(philo);

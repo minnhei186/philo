@@ -6,7 +6,7 @@
 /*   By: hosokawa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 10:27:16 by hosokawa          #+#    #+#             */
-/*   Updated: 2024/08/28 12:15:54 by dhosokaw         ###   ########.fr       */
+/*   Updated: 2024/08/31 09:12:59 by hosokawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	survived_check(t_thread_memory *info)
 int	noteat_check(t_thread_memory *info, t_philo philo, u_int64_t dead_time)
 {
 	pthread_mutex_lock(&(info->meal_lock));
-	if (get_time() - (philo.time_to_die) >= dead_time && philo.eating == 0)
+	if (get_time() - (philo.time_to_die) >= dead_time)
 	{
 		pthread_mutex_unlock(&(info->meal_lock));
 		return (1);
@@ -56,7 +56,14 @@ int	noteat_dead(t_thread_memory *info)
 	{
 		if (noteat_check(info, info->philos[i], info->death_time) == 1)
 		{
-			protected_output("died\n", &(info->philos[i]));
+			pthread_mutex_lock(&(info->dead_lock));
+			if (info->dead != 1)
+			{
+				printf("%llu %i died\n", get_time() - (info->start_time),
+					info->philos[i].id);
+				info->dead = 1;
+			}
+			pthread_mutex_unlock(&(info->dead_lock));
 			return (1);
 		}
 		i++;
@@ -74,12 +81,7 @@ int	death_flag_wake_up(t_thread_memory *info)
 		return (1);
 	}
 	if (noteat_dead(info) == 1)
-	{
-		pthread_mutex_lock(&(info->dead_lock));
-		info->dead = 1;
-		pthread_mutex_unlock(&(info->dead_lock));
 		return (1);
-	}
 	return (0);
 }
 
